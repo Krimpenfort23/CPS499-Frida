@@ -11,15 +11,15 @@ Computer Security Course Final Project -- This topic involves using a javascript
   Our contributions to the course will be in regards to be *IRM's, AOP, Data Races,* and *Protection in Software*. 
 ## 4. Your group plan: how your group members contribute to the project, the work plan. ##
 - Anna and Evan will work together through each of these sections. The work plan will be as such.\n
-  - a. Recreate a program like *ShoppingCart.java*.\n
-    - a.1 layout the data race vulnerability while creating the program.
-  - b. Create the python script that will run the Frida script.
-  - c. Design the Frida Script and see if it can completely fix the problems that ShoppingCart.java had (assignment I).
-    - c.1 If Frida *can't*, we will both go back and make any necessary changes to the code so that Frida **can** fix the code.
-    - c.2 If Frida *can*, then we will show how it completely fixed the program.
-  - d. Write the final report on our solution.
+  - **A.** Recreate a program like *ShoppingCart.java*.\n
+    - **A.1** layout the data race vulnerability while creating the program.
+  - **B.** Create the python script that will run the Frida script.
+  - **C.** Design the Frida Script and see if it can completely fix the problems that ShoppingCart.java had (assignment I).
+    - **C.1** If Frida *can't*, we will both go back and make any necessary changes to the code so that Frida **can** fix the code.
+    - **C.2** If Frida *can*, then we will show how it completely fixed the program.
+  - **D.** Write the final report on our solution.
 ## 5. Timeline: Particular intermediate tasks and timeframe to complete the task. The time starts from proposal approval to the final report deadline. ##
-  Task A should take 3 weeks.
-  Task B should take 1 week.
-  Task C should take 2-3 weeks (depending on Frida's capabilities).
-  Task D should take 1 week.
+- Task A should take 3 weeks.
+- Task B should take 1 week.
+- Task C should take 2-3 weeks (depending on Frida's capabilities).
+- Task D should take 1 week.
