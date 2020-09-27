@@ -2,7 +2,7 @@
 Computer Security Course Final Project -- This topic involves using a javascript framework called Frida to do In-line Reference Monitoring on Lower-level code (at the Assembly and C level). The JS framework will be used in a python script.
 
 # Project Proposal
-0. CPS499-Frida | Evan Krimpenfort and Anna Durcey
+## 0. CPS499-Frida | Evan Krimpenfort and Anna Durcey ##
 ## 1. Summary of Background ##
   This final project is a case study of an injection framework called Frida. Their website https://frida.re has explicit documentation on use cases and documents on their API's. Since one of the topics in this class was going over AOP inside of In-Line Refrence Monitors, we are going to be doing something similar to the Shopping Cart Problem like seen in Lab I and Assignment I. Since Frida is more focused on the the lower-level works, we will be writing a program in C that has  vulnerabilities similar to ShoppingCart.java. Then, like assignment I, we will fix the program with Frida. 
 ## 2. Project objectives ##
@@ -10,8 +10,8 @@ Computer Security Course Final Project -- This topic involves using a javascript
 ## 3. Expected contributions and the relevance to the course topics ##
   Our contributions to the course will be in regards to be *IRM's, AOP, Data Races,* and *Protection in Software*. 
 ## 4. Your group plan: how your group members contribute to the project, the work plan. ##
-  Anna and Evan will work together through each of these sections. The work plan will be as such.
-  a. Recreate a program like *ShoppingCart.java*.
+  Anna and Evan will work together through each of these sections. The work plan will be as such.\n
+  a. Recreate a program like *ShoppingCart.java*.\n
     a.1 layout the data race vulnerability while creating the program.
   b. Create the python script that will run the Frida script.
   c. Design the Frida Script and see if it can completely fix the problems that ShoppingCart.java had (assignment I).
