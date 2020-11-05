@@ -1,6 +1,8 @@
 # CPS499-Frida
 Computer Security Course Final Project -- This topic involves using a JavaScript framework called Frida to do in-line reference monitoring on lower-level code (at the assembly and C level). The JS framework will be used in a Python script.
 
+Trello board: https://trello.com/b/z9FXXdpJ/final-project
+
 # Project Proposal
 ## 0. CPS499-Frida | Evan Krimpenfort and Anna Duricy ##
 ## 1. Summary of Background ##
