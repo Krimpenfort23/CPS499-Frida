@@ -40,9 +40,9 @@ int getPrice(Store *self, char *product) {
 }
 
 // for testing purposes
-int main() {
+/*int main() {
 	Store *store = Store__create();
 	printf("%d\n", getPrice(store, "candies"));
 	printItems(store);
 	return 0;
-}
+}*/
