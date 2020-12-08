@@ -4,30 +4,30 @@
 typedef struct Pocket {
 	// The RandomAccessFile of Pocket
 	FILE *fp;
-} Pocket;
+} Pocket_t;
 
-void Pocket__init(Pocket* self, FILE *fp) {
+void Pocket__init(Pocket_t* self, FILE *fp) {
 	fp = fopen("pocket.txt", "r+");
 	self->fp = fp;
 }
 
 // Creates a Pocket object that interfaces with the
 // Pocket RandomAccessFile
-Pocket* Pocket__create() {
+Pocket_t* Pocket__create() {
 	FILE *fp;
-	Pocket* result = (Pocket*) malloc(sizeof(Pocket));
+	Pocket_t* result = (Pocket_t*) malloc(sizeof(Pocket_t));
 	Pocket__init(result, fp);
 	return result;
 }
 
 // Add a product to the pocket
-void addProduct(Pocket *self, char* product) {
+void addProduct(Pocket_t *self, char* product) {
 	fputs(product, self->fp);
 	fputs("\n", self->fp);
 }
 
 // CLose the file
-void Pocket__close(Pocket* self) {
+void Pocket__close(Pocket_t* self) {
 	fclose(self->fp);
 }
 

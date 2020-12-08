@@ -4,24 +4,24 @@
 typedef struct Wallet {
 	// The RandomAccessFile of Wallet
 	FILE *fp;
-} Wallet;
+} Wallet_t;
 
-void Wallet__init(Wallet* self, FILE *fp) {
+void Wallet__init(Wallet_t* self, FILE *fp) {
 	fp = fopen("wallet.txt", "r+");
 	self->fp = fp;
 }
 
 // Creates a Wallet object that interfaces with the
 // Wallet RandomAccessFile
-Wallet* Wallet__create() {
+Wallet_t* Wallet__create() {
 	FILE *fp;
-	Wallet* result = (Wallet*) malloc(sizeof(Wallet));
+	Wallet_t* result = (Wallet_t*) malloc(sizeof(Wallet_t));
 	Wallet__init(result, fp);
 	return result;
 }
 
 //Returns the balance of the wallet
-int getBalance(Wallet *self) {
+int getBalance(Wallet_t *self) {
 	// 10 is just arbitrary. I doubt we'll ever have more
 	// in the wallet than that
 	char c[10];
@@ -40,7 +40,7 @@ int getBalanceLen(int balance) {
 	return len;
 }
 // Set a new balance in the wallet
-void setBalance(Wallet *self, int balance) {
+void setBalance(Wallet_t *self, int balance) {
 	// add the new balance
 	char balanceStr[getBalanceLen(balance)];
 	sprintf(balanceStr, "%d\n", balance);
@@ -50,7 +50,7 @@ void setBalance(Wallet *self, int balance) {
 }
 
 // CLose the file
-void Wallet__close(Wallet* self) {
+void Wallet__close(Wallet_t* self) {
 	fclose(self->fp);
 }
 

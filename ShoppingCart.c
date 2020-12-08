@@ -165,10 +165,22 @@ int main(int argc, char **argv)
         }
 
         /*
+         * Create the store
+         */
+        Store_t store;
+        store = *Store__create();
+
+        /*
          * Send over the available items.
          */ 
         bzero(buf, BUFSIZE);
         strcpy(buf, "Welcome to Evan Krimpenfort's ShoppingCart.\nPlease select your product:\n");
+        n = write(childfd, buf, strlen(buf));
+        bzero(buf, BUFSIZE);
+        strcpy(buf, printItems(&store));
+        n = write(childfd, buf, strlen(buf));
+        bzero(buf, BUFSIZE);
+        strcpy(buf, "What do you want to buy, type e.g., pen?\n");
         n = write(childfd, buf, strlen(buf));
         if (n < 0) 
         {

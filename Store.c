@@ -5,24 +5,24 @@
 typedef struct Store {
 	// The list of products sold in the store
 	char *list;
-} Store;
+} Store_t;
 
-void Store__init(Store* self) {
+void Store__init(Store_t* self) {
 	self->list = "candies - 1\ncar - 30000\npen - 40\nbook - 100    \n";
 }
 
-Store* Store__create() {
-	Store* result = (Store*) malloc(sizeof(Store));
+Store_t* Store__create() {
+	Store_t* result = (Store_t*) malloc(sizeof(Store_t));
 	Store__init(result);
 	return result;
 }
 
-void printItems(Store* self) {
-	printf("%s", self->list);
+char* printItems(Store_t* self) {
+	return self->list;
 }
 
 //Returns the price of a particular product
-int getPrice(Store *self, char *product) {
+int getPrice(Store_t *self, char *product) {
 	int price = 0;
 	if (product == "candies") {
 		price = 1;
@@ -41,7 +41,7 @@ int getPrice(Store *self, char *product) {
 
 // for testing purposes
 /*int main() {
-	Store *store = Store__create();
+	Store_t *store = Store__create();
 	printf("%d\n", getPrice(store, "candies"));
 	printItems(store);
 	return 0;
