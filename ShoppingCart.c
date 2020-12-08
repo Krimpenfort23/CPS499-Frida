@@ -5,6 +5,9 @@
  */
 
 #include "ShoppingCart.h"
+#include "Store.c"
+#include "Wallet.c"
+#include "Pocket.c"
 #define BUFSIZE 1024
 
 #if 0
@@ -48,19 +51,22 @@ void error(char *message)
     exit(1);
 }
 
+/*
+ * Main routine
+ */
 int main(int argc, char **argv) 
 {
     int parentfd; /* parent socket */
     int childfd; /* child socket */
-    int portno; /* port to listen on */
+    int port; /* port to listen on */
     int clientlen; /* byte size of client's address */
+    int optval; /* flag value for setsockopt */
+    int n; /* message byte size */
+    char buf[BUFSIZE]; /* message buffer */
+    char *hostaddrp; /* dotted decimal host addr string */
     struct sockaddr_in serveraddr; /* server's addr */
     struct sockaddr_in clientaddr; /* client addr */
     struct hostent *hostp; /* client host info */
-    char buf[BUFSIZE]; /* message buffer */
-    char *hostaddrp; /* dotted decimal host addr string */
-    int optval; /* flag value for setsockopt */
-    int n; /* message byte size */
 
     /* 
     * check command line arguments 
@@ -70,7 +76,7 @@ int main(int argc, char **argv)
         fprintf(stderr, "usage: %s <port>\n", argv[0]);
         exit(1);
     }
-    portno = atoi(argv[1]);
+    port = atoi(argv[1]);
 
     /* 
     * socket: create the parent socket 
@@ -103,7 +109,7 @@ int main(int argc, char **argv)
     serveraddr.sin_addr.s_addr = htonl(INADDR_ANY);
 
     /* this is the port we will listen on */
-    serveraddr.sin_port = htons((unsigned short)portno);
+    serveraddr.sin_port = htons((unsigned short)port);
 
     /* 
     * bind: associate the parent socket with a port 
@@ -126,6 +132,8 @@ int main(int argc, char **argv)
     * then close connection.
     */
     clientlen = sizeof(clientaddr);
+    printf("ShoppingCart program is running on port (%d)\n", port);
+    printf("Waiting for connections from Clients...\n");
     while (1) 
     {
         /* 
@@ -136,7 +144,11 @@ int main(int argc, char **argv)
         {
             error("ERROR on accept");
         }
-
+        else
+        {
+            printf("Customer Connected!\n");
+        }
+        
         /* 
          * gethostbyaddr: determine who sent the message 
          */
@@ -152,7 +164,16 @@ int main(int argc, char **argv)
             error("ERROR on inet_ntoa\n");
         }
 
-        printf("server established connection with %s (%s)\n", hostp->h_name, hostaddrp);
+        /*
+         * Send over the available items.
+         */ 
+        bzero(buf, BUFSIZE);
+        strcpy(buf, "Welcome to Evan Krimpenfort's ShoppingCart.\nPlease select your product:\n");
+        n = write(childfd, buf, strlen(buf));
+        if (n < 0) 
+        {
+            error("ERROR writing to socket");
+        }
 
         /* 
          * read: read input string from the client
