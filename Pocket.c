@@ -3,9 +3,6 @@
 
 typedef struct Pocket {
 	// The RandomAccessFile of Pocket
-	/*
-	 * EVAN HELP should this be FILE file or FILE *file
-	 */
 	FILE *fp;
 } Pocket;
 
@@ -38,5 +35,6 @@ void Pocket__close(Pocket* self) {
 /*int main() {
 	Pocket *pocket = Pocket__create();
 	addProduct(pocket, "book");
+	addProduct(pocket, "pen");
 	return 0;
 }*/
