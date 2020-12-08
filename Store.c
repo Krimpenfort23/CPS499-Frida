@@ -9,13 +9,16 @@ typedef struct Store {
 
 void Store__init(Store* self) {
 	self->list = "candies - 1\ncar - 30000\npen - 40\nbook - 100    \n";
-	printf("%s", self->list);
 }
 
 Store* Store__create() {
 	Store* result = (Store*) malloc(sizeof(Store));
 	Store__init(result);
 	return result;
+}
+
+void printItems(Store* self) {
+	printf("%s", self->list);
 }
 
 //Returns the price of a particular product
@@ -37,8 +40,9 @@ int getPrice(Store *self, char *product) {
 }
 
 // for testing purposes
-/*int main() {
+int main() {
 	Store *store = Store__create();
 	printf("%d\n", getPrice(store, "candies"));
+	printItems(store);
 	return 0;
-}*/
+}
