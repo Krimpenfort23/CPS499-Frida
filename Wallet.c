@@ -1,6 +1,5 @@
 #include<stdio.h>
 #include<stdlib.h>
-#include<math.h>
 
 typedef struct Wallet {
 	// The RandomAccessFile of Wallet
@@ -23,7 +22,9 @@ Wallet* Wallet__create() {
 
 //Returns the balance of the wallet
 int getBalance(Wallet *self) {
-	char c[7];
+	// 10 is just arbitrary. I doubt we'll ever have more
+	// in the wallet than that
+	char c[10];
 	fscanf(self->fp, "%[^\n]", c);
 	return atoi(c);
 }
