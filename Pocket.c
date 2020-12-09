@@ -7,7 +7,7 @@ typedef struct Pocket {
 } Pocket_t;
 
 void Pocket__init(Pocket_t* self, FILE *fp) {
-	fp = fopen("pocket.txt", "r+");
+	fp = fopen("pocket.txt", "a+");
 	self->fp = fp;
 }
 
@@ -32,9 +32,9 @@ void Pocket__close(Pocket_t* self) {
 }
 
 // for testing purposes
-/*int main() {
-	Pocket *pocket = Pocket__create();
+int main() {
+	Pocket_t *pocket = Pocket__create();
 	addProduct(pocket, "book");
 	addProduct(pocket, "pen");
 	return 0;
-}*/
+}
