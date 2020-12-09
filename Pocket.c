@@ -32,9 +32,9 @@ void Pocket__close(Pocket_t* self) {
 }
 
 // for testing purposes
-int main() {
+/*int main() {
 	Pocket_t *pocket = Pocket__create();
 	addProduct(pocket, "book");
 	addProduct(pocket, "pen");
 	return 0;
-}
+}*/
