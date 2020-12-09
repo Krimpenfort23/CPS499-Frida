@@ -116,7 +116,6 @@ int main(int argc, char **argv)
          * write: send over the available items.
          */ 
         int balance = getBalance(&wallet);
-        Wallet__close(&wallet);
         bzero(buf, BUFSIZE);
         strcpy(buf, "Welcome to Evan Krimpenfort's ShoppingCart.\nPlease select your product:\n");
         write(childfd, buf, strlen(buf));
@@ -151,12 +150,15 @@ int main(int argc, char **argv)
 
             setBalance(&wallet, balance-price); 
             Wallet__close(&wallet);
+            wallet = *Wallet__create();
+            balance = getBalance(&wallet);
+            Wallet__close(&wallet);
 
             /*
              * write: tell the client they can purchase the item.
              */
             bzero(buf, BUFSIZE);
-            sprintf(buf, "You have successfully purchased a %s.\nYour new balance is now $%d\n", product, balance-price);
+            sprintf(buf, "You have successfully purchased a %s.\nYour new balance is now $%d\n", product, balance);
             write(childfd, buf, BUFSIZE);
         }
         
