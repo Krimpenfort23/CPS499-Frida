@@ -1,5 +1,5 @@
-#include<stdio.h>
-#include<stdlib.h>
+#include <stdio.h>
+#include <stdlib.h>
 
 typedef struct Wallet {
 	// The RandomAccessFile of Wallet
@@ -56,7 +56,7 @@ void Wallet__close(Wallet_t* self) {
 
 // for testing purposes
 /*int main() {
-	Wallet *wallet = Wallet__create();
+	Wallet_t *wallet = Wallet__create();
 	printf("%d\n", getBalance(wallet));
 	//setBalance(wallet, 55);
 	return 0;

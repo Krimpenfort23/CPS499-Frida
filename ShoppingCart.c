@@ -10,38 +10,6 @@
 #include "Pocket.c"
 #define BUFSIZE 1024
 
-#if 0
-/* 
- * Structs exported from in.h
- */
-
-/* Internet address */
-struct in_addr {
-  unsigned int s_addr; 
-};
-
-/* Internet style socket address */
-struct sockaddr_in  {
-  unsigned short int sin_family; /* Address family */
-  unsigned short int sin_port;   /* Port number */
-  struct in_addr sin_addr;	 /* IP address */
-  unsigned char sin_zero[...];   /* Pad to size of 'struct sockaddr' */
-};
-
-/*
- * Struct exported from netdb.h
- */
-
-/* Domain name service (DNS) host entry */
-struct hostent {
-  char    *h_name;        /* official name of host */
-  char    **h_aliases;    /* alias list */
-  int     h_addrtype;     /* host address type */
-  int     h_length;       /* length of address */
-  char    **h_addr_list;  /* list of addresses */
-}
-#endif
-
 /*
  * error - wrapper for perror
  */
@@ -56,12 +24,12 @@ void error(char *message)
  */
 int main(int argc, char **argv) 
 {
-    int parentfd; /* parent socket */
-    int childfd; /* child socket */
-    int port; /* port to listen on */
-    int clientlen; /* byte size of client's address */
-    int optval; /* flag value for setsockopt */
-    int n; /* message byte size */
+    int parentfd = 0; /* parent socket */
+    int childfd = 0; /* child socket */
+    int port = 0; /* port to listen on */
+    int clientlen = 0; /* byte size of client's address */
+    int optval = 0; /* flag value for setsockopt */
+    int n = 0; /* message byte size */
     char buf[BUFSIZE]; /* message buffer */
     char *hostaddrp; /* dotted decimal host addr string */
     struct sockaddr_in serveraddr; /* server's addr */
@@ -69,8 +37,8 @@ int main(int argc, char **argv)
     struct hostent *hostp; /* client host info */
 
     /* 
-    * check command line arguments 
-    */
+     * check command line arguments 
+     */
     if (argc != 2) 
     {
         fprintf(stderr, "usage: %s <port>\n", argv[0]);
@@ -78,14 +46,8 @@ int main(int argc, char **argv)
     }
     port = atoi(argv[1]);
 
-    /* 
-    * socket: create the parent socket 
-    */
-    parentfd = socket(AF_INET, SOCK_STREAM, 0);
-    if (parentfd < 0)
-    {
-        error("ERROR opening socket");
-    }
+    parentfd = socket(AF_INET, SOCK_STREAM, 0); /* socket: create the parent socket */
+    if (parentfd < 0) { error("ERROR opening socket"); }
 
     /* 
      * setsockopt: Handy debugging trick that lets 
@@ -94,27 +56,18 @@ int main(int argc, char **argv)
      * Eliminates "ERROR on binding: Address already in use" error. 
      */
     optval = 1;
-    setsockopt(parentfd, SOL_SOCKET, SO_REUSEADDR, 
-            (const void *)&optval , sizeof(int));
+    setsockopt(parentfd, 
+               SOL_SOCKET, 
+               SO_REUSEADDR, 
+               (const void *)&optval, 
+               sizeof(int));
 
-    /*
-     * build the server's Internet address
-     */
-    bzero((char *) &serveraddr, sizeof(serveraddr));
+    bzero((char *) &serveraddr, sizeof(serveraddr));    /* build the server's Internet address */
+    serveraddr.sin_family = AF_INET;                    /* this is an Internet address */
+    serveraddr.sin_addr.s_addr = htonl(INADDR_ANY);     /* let the system figure out our IP address */
+    serveraddr.sin_port = htons((unsigned short)port);  /* this is the port we will listen on */
 
-    /* this is an Internet address */
-    serveraddr.sin_family = AF_INET;
-
-    /* let the system figure out our IP address */
-    serveraddr.sin_addr.s_addr = htonl(INADDR_ANY);
-
-    /* this is the port we will listen on */
-    serveraddr.sin_port = htons((unsigned short)port);
-
-    /* 
-    * bind: associate the parent socket with a port 
-    */
-    if (bind(parentfd, (struct sockaddr *) &serveraddr, sizeof(serveraddr)) < 0)
+    if (bind(parentfd, (struct sockaddr *) &serveraddr, sizeof(serveraddr)) < 0)    /* bind: associate the parent socket with a port */
     {
         error("ERROR on binding");
     }
@@ -140,73 +93,73 @@ int main(int argc, char **argv)
          * accept: wait for a connection request 
          */
         childfd = accept(parentfd, (struct sockaddr *) &clientaddr, &clientlen);
-        if (childfd < 0) 
-        {
-            error("ERROR on accept");
-        }
-        else
-        {
-            printf("Customer Connected!\n");
-        }
+        if (childfd < 0) { error("ERROR on accept"); }
+        else { printf("Customer Connected!\n"); }
         
         /* 
          * gethostbyaddr: determine who sent the message 
          */
         hostp = gethostbyaddr((const char *)&clientaddr.sin_addr.s_addr, sizeof(clientaddr.sin_addr.s_addr), AF_INET);
-        if (hostp == NULL)
-        {
-            error("ERROR on gethostbyaddr");
-        }
+        if (hostp == NULL) { error("ERROR on gethostbyaddr"); }
 
         hostaddrp = inet_ntoa(clientaddr.sin_addr);
-        if (hostaddrp == NULL)
-        {
-            error("ERROR on inet_ntoa\n");
-        }
+        if (hostaddrp == NULL) { error("ERROR on inet_ntoa\n"); }
 
         /*
-         * Create the store
+         * Create the store, wallet, and pocket
          */
-        Store_t store;
-        store = *Store__create();
+        Store_t store = *Store__create();
+        Wallet_t wallet = *Wallet__create();
+        Pocket_t pocket = *Pocket__create();
 
         /*
-         * Send over the available items.
+         * write: send over the available items.
          */ 
+        int balance = getBalance(&wallet);
+        Wallet__close(&wallet);
         bzero(buf, BUFSIZE);
         strcpy(buf, "Welcome to Evan Krimpenfort's ShoppingCart.\nPlease select your product:\n");
-        n = write(childfd, buf, strlen(buf));
+        write(childfd, buf, strlen(buf));
         bzero(buf, BUFSIZE);
         strcpy(buf, printItems(&store));
-        n = write(childfd, buf, strlen(buf));
+        write(childfd, buf, strlen(buf));
+        bzero(buf, BUFSIZE);
+        sprintf(buf, "Your balance is $%d.\n", balance);
+        write(childfd, buf, strlen(buf));
         bzero(buf, BUFSIZE);
         strcpy(buf, "What do you want to buy, type e.g., pen?\n");
-        n = write(childfd, buf, strlen(buf));
-        if (n < 0) 
-        {
-            error("ERROR writing to socket");
-        }
+        write(childfd, buf, strlen(buf));
 
         /* 
          * read: read input string from the client
          */
         bzero(buf, BUFSIZE);
-        n = read(childfd, buf, BUFSIZE);
-        if (n < 0) 
-        {
-            error("ERROR reading from socket");
+        read(childfd, buf, BUFSIZE);
+        char* product[BUFSIZE];
+        strcpy(product, buf);
+        int price = getPrice(&store, product);
+        if (price == 0) 
+        { 
+            bzero(buf, BUFSIZE);
+            strcpy(buf, "That Item is not available. Pick another item.\n");
+            write(childfd, buf, BUFSIZE);
         }
-        printf("server received %d bytes: %s", n, buf);
-
-        /* 
-         * write: echo the input string back to the client 
-         */
-        n = write(childfd, buf, strlen(buf));
-        if (n < 0) 
+        else
         {
-            error("ERROR writing to socket");
-        }
+            addProduct(&pocket, product);
+            Pocket__close(&pocket);
 
+            setBalance(&wallet, balance-price); 
+            Wallet__close(&wallet);
+
+            /*
+             * write: tell the client they can purchase the item.
+             */
+            bzero(buf, BUFSIZE);
+            sprintf(buf, "You have successfully purchased a %s.\nYour new balance is now $%d\n", product, balance-price);
+            write(childfd, buf, BUFSIZE);
+        }
+        
         close(childfd);
     }
 }

@@ -1,6 +1,6 @@
-#include<stdio.h>
-#include<stdlib.h>
-#include<math.h>
+#include <stdio.h>
+#include <stdlib.h>
+#include <math.h>
 
 typedef struct Store {
 	// The list of products sold in the store
@@ -23,17 +23,18 @@ char* printItems(Store_t* self) {
 
 //Returns the price of a particular product
 int getPrice(Store_t *self, char *product) {
+	*(product+strlen(product)-2) = '\0'; // length correction...
 	int price = 0;
-	if (product == "candies") {
+	if (strcmp(product,"candies") == 0) {
 		price = 1;
 	}
-	if (product == "car") {
+	else if (strcmp(product,"car") == 0) {
 		price = 30000;
 	}
-	if (product == "pen") {
+	else if (strcmp(product,"pen") == 0) {
 		price = 40;
 	}
-	if (product == "book") {
+	else if (strcmp(product,"book") == 0) {
 		price = 100;
 	}
 	return price;
