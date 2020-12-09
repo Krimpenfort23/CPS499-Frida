@@ -7,7 +7,7 @@ typedef struct Wallet {
 } Wallet_t;
 
 void Wallet__init(Wallet_t* self, FILE *fp) {
-	fp = fopen("wallet.txt", "w+");
+	fp = fopen("wallet.txt", "r+");
 	self->fp = fp;
 }
 
@@ -44,6 +44,8 @@ void setBalance(Wallet_t *self, int balance) {
 	// add the new balance
 	char balanceStr[getBalanceLen(balance)];
 	sprintf(balanceStr, "%d\n", balance);
+	self->fp = fopen("wallet.txt", "w");
+	fseek(self->fp, 0, SEEK_SET);
 	fputs(balanceStr, self->fp);
 }
 
