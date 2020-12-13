@@ -6,7 +6,7 @@ Trello board: https://trello.com/b/z9FXXdpJ/final-project
 # Project Proposal
 ## 0. CPS499-Frida | Evan Krimpenfort and Anna Duricy ##
 ## 1. Summary of Background ##
-  This final project is a case study of an injection framework called Frida. Their website https://frida.re has explicit documentation on use cases and documents on their APIs. We are going to be examining AOP inside of in-line reference monitors, similarly to the Shopping Cart Problem seen in Lab I and Assignment I. Since Frida is more focused on the the lower-level works, we will be writing a program in C that has vulnerabilities similar to ShoppingCart.java. Then, like Assignment I, we will fix the program with Frida. 
+  This final project is a case study of an injection framework called Frida. Their website https://frida.re has explicit documentation on use cases and documents on their APIs. We are going to be examining AOP inside of in-line reference monitors, similarly to the Shopping Cart Problem seen in Lab I and Assignment I. Since Frida is more focused on the lower-level works, we will be writing a program in C that has vulnerabilities similar to ShoppingCart.java. Then, like Assignment I, we will fix the program with Frida. 
 ## 2. Project objectives ##
 This program will be graded on a few things. 
 - Was Frida easier to use than AspectJ? 
