@@ -62,3 +62,10 @@ car
 book
 book
 car
+book
+pen
+car
+pen
+book
+car
+book
